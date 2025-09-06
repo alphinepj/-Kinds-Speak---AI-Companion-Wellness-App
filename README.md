@@ -1,0 +1,1 @@
+# -Kinds-Speak---AI-Companion-Wellness-App
