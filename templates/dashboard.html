@@ -1,0 +1,292 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Kinds Speak{% endblock %}
+
+{% block body %}
+<div class="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+    <!-- Navigation -->
+    <nav class="nav-modern fixed top-0 left-0 right-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <button id="sidebarToggle" class="lg:hidden text-white hover:text-purple-400 transition-colors mr-4">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                    <a href="/" class="nav-brand">Kinds Speak</a>
+                </div>
+
+                <!-- User Menu -->
+                <div class="flex items-center space-x-4">
+                    <!-- Notifications -->
+                    <button class="relative text-white hover:text-purple-400 transition-colors">
+                        <i class="fas fa-bell text-xl"></i>
+                        <span class="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full"></span>
+                    </button>
+
+                    <!-- User Profile -->
+                    <div class="relative" id="userDropdown">
+                        <button class="flex items-center space-x-3 text-white hover:text-purple-400 transition-colors">
+                            <div class="w-8 h-8 bg-gradient-primary rounded-full flex items-center justify-center">
+                                <span class="text-sm font-bold" id="userInitials">U</span>
+                            </div>
+                            <span class="hidden sm:block" id="userName">User</span>
+                            <i class="fas fa-chevron-down text-sm"></i>
+                        </button>
+                        
+                        <!-- Dropdown Menu -->
+                        <div class="absolute right-0 mt-2 w-48 glass-dark rounded-lg shadow-lg hidden" id="dropdownMenu">
+                            <div class="py-2">
+                                <a href="javascript:void(0)" onclick="openModal('profileModal')" class="block px-4 py-2 text-sm text-white hover:bg-purple-600/20 transition-colors">
+                                    <i class="fas fa-user mr-2"></i>Profile
+                                </a>
+                                <a href="javascript:void(0)" onclick="alert('Settings feature coming soon!')" class="block px-4 py-2 text-sm text-white hover:bg-purple-600/20 transition-colors">
+                                    <i class="fas fa-cog mr-2"></i>Settings
+                                </a>
+                                <hr class="my-2 border-slate-600">
+                                <a href="/logout" class="block px-4 py-2 text-sm text-red-400 hover:bg-red-600/20 transition-colors">
+                                    <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <aside class="sidebar-modern transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out" id="sidebar">
+        <div class="p-6">
+            <!-- Profile Section -->
+            <div class="text-center mb-8">
+                <div class="w-16 h-16 bg-gradient-primary rounded-full mx-auto mb-3 flex items-center justify-center">
+                    <span class="text-xl font-bold text-white" id="sidebarUserInitials">U</span>
+                </div>
+                <h3 class="text-white font-semibold" id="sidebarUserName">Welcome</h3>
+                <p class="text-slate-400 text-sm">AI Companion User</p>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav class="space-y-2">
+                <a href="#" class="sidebar-item active" data-section="chat">
+                    <i class="fas fa-comments"></i>
+                    <span>Chat</span>
+                </a>
+                <a href="#" class="sidebar-item" data-section="camera">
+                    <i class="fas fa-camera"></i>
+                    <span>Emotion Camera</span>
+                </a>
+                <a href="#" class="sidebar-item" data-section="mood">
+                    <i class="fas fa-heart"></i>
+                    <span>Mood Journal</span>
+                </a>
+                <a href="#" class="sidebar-item" data-section="music">
+                    <i class="fas fa-music"></i>
+                    <span>Music Therapy</span>
+                </a>
+                <a href="#" class="sidebar-item" data-section="wellness">
+                    <i class="fas fa-leaf"></i>
+                    <span>Wellness</span>
+                </a>
+                <a href="#" class="sidebar-item" data-section="analytics">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Analytics</span>
+                </a>
+            </nav>
+
+            <!-- Quick Actions -->
+            <div class="mt-8">
+                <h4 class="text-slate-400 text-sm font-semibold mb-3">Quick Actions</h4>
+                <div class="space-y-2">
+                    <button class="w-full btn-modern btn-ghost text-sm py-2" onclick="startNewChat()">
+                        <i class="fas fa-plus mr-2"></i>New Chat
+                    </button>
+                    <button class="w-full btn-modern btn-ghost text-sm py-2" onclick="toggleCamera()">
+                        <i class="fas fa-video mr-2"></i>Start Camera
+                    </button>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="lg:ml-80 pt-16 min-h-screen">
+        <!-- Chat Section -->
+        <div id="chatSection" class="section active">
+            <div class="flex h-screen">
+                <!-- Chat Sessions Sidebar -->
+                <div class="w-80 bg-slate-800/50 backdrop-blur-lg border-r border-slate-700 hidden xl:block">
+                    <div class="p-4">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-white font-semibold">Chat Sessions</h3>
+                            <button class="btn-modern btn-ghost text-sm py-1 px-3" onclick="startNewChat()">
+                                <i class="fas fa-plus mr-1"></i>New
+                            </button>
+                        </div>
+                        <div id="chatSessions" class="space-y-2">
+                            <!-- Sessions will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chat Interface -->
+                <div class="flex-1 flex flex-col">
+                    <!-- Chat Header -->
+                    <div class="bg-slate-800/50 backdrop-blur-lg border-b border-slate-700 p-4">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 bg-gradient-primary rounded-full flex items-center justify-center">
+                                    <i class="fas fa-robot text-white"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-white font-semibold">AI Companion</h3>
+                                    <p class="text-slate-400 text-sm">Online • Ready to help</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <button class="btn-modern btn-ghost text-sm py-1 px-3" onclick="toggleCamera()">
+                                    <i class="fas fa-camera mr-1"></i>Camera
+                                </button>
+                                <button class="btn-modern btn-ghost text-sm py-1 px-3" onclick="clearChat()">
+                                    <i class="fas fa-trash mr-1"></i>Clear
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Messages Container -->
+                    <div class="chat-messages flex-1 p-4 space-y-4" id="messagesContainer">
+                        <!-- Welcome Message -->
+                        <div class="message ai fade-in">
+                            <div class="w-8 h-8 bg-gradient-primary rounded-full flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-robot text-white text-sm"></i>
+                            </div>
+                            <div class="message-bubble ai">
+                                <p>Hello! I'm your AI companion. I'm here to chat, help with your emotions, and support your wellness journey. How are you feeling today?</p>
+                                <div class="text-xs text-slate-400 mt-2">Just now</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chat Input -->
+                    <div class="chat-input-container">
+                        <div class="chat-input">
+                            <textarea 
+                                id="messageInput" 
+                                placeholder="Type your message..." 
+                                rows="1"
+                                class="flex-1 resize-none bg-slate-800/50 border border-slate-600 rounded-lg px-4 py-3 text-white placeholder-slate-400 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-colors"
+                            ></textarea>
+                            <button 
+                                id="sendButton" 
+                                class="btn-modern btn-primary px-4 py-3"
+                                onclick="sendMessage()"
+                            >
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Camera Section -->
+        <div id="cameraSection" class="section hidden">
+            <div class="p-6">
+                <div class="max-w-4xl mx-auto">
+                    <h2 class="text-2xl font-bold text-white mb-6">Emotion Detection Camera</h2>
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <!-- Camera Feed -->
+                        <div class="card-modern">
+                            <div class="aspect-video bg-slate-800 rounded-lg flex items-center justify-center mb-4">
+                                <video id="cameraFeed" class="w-full h-full object-cover rounded-lg hidden"></video>
+                                <div id="cameraPlaceholder" class="text-center">
+                                    <i class="fas fa-camera text-6xl text-slate-600 mb-4"></i>
+                                    <p class="text-slate-400">Camera not active</p>
+                                    <button class="btn-modern btn-primary mt-4" onclick="startCamera()">
+                                        <i class="fas fa-play mr-2"></i>Start Camera
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="flex justify-center space-x-4">
+                                <button id="cameraToggle" class="btn-modern btn-secondary" onclick="toggleCamera()">
+                                    <i class="fas fa-video mr-2"></i>Start Camera
+                                </button>
+                                <button class="btn-modern btn-ghost" onclick="captureEmotion()">
+                                    <i class="fas fa-camera mr-2"></i>Capture
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Emotion Results -->
+                        <div class="card-modern">
+                            <h3 class="text-xl font-semibold text-white mb-4">Detected Emotions</h3>
+                            <div id="emotionResults" class="space-y-3">
+                                <div class="text-center text-slate-400 py-8">
+                                    <i class="fas fa-smile text-4xl mb-3"></i>
+                                    <p>Start camera to detect emotions</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Other Sections (Mood, Music, Wellness, Analytics) -->
+        <div id="moodSection" class="section hidden">
+            <div class="p-6">
+                <div class="max-w-4xl mx-auto">
+                    <h2 class="text-2xl font-bold text-white mb-6">Mood Journal</h2>
+                    <div class="card-modern">
+                        <p class="text-slate-400 text-center py-8">Mood journal interface coming soon...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="musicSection" class="section hidden">
+            <div class="p-6">
+                <div class="max-w-4xl mx-auto">
+                    <h2 class="text-2xl font-bold text-white mb-6">Music Therapy</h2>
+                    <div class="card-modern">
+                        <p class="text-slate-400 text-center py-8">Music therapy interface coming soon...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="wellnessSection" class="section hidden">
+            <div class="p-6">
+                <div class="max-w-4xl mx-auto">
+                    <h2 class="text-2xl font-bold text-white mb-6">Wellness Center</h2>
+                    <div class="card-modern">
+                        <p class="text-slate-400 text-center py-8">Wellness center interface coming soon...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="analyticsSection" class="section hidden">
+            <div class="p-6">
+                <div class="max-w-4xl mx-auto">
+                    <h2 class="text-2xl font-bold text-white mb-6">Analytics Dashboard</h2>
+                    <div class="card-modern">
+                        <p class="text-slate-400 text-center py-8">Analytics dashboard coming soon...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Mobile Sidebar Overlay -->
+    <div id="sidebarOverlay" class="fixed inset-0 bg-black bg-opacity-50 z-30 lg:hidden hidden" onclick="closeSidebar()"></div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}

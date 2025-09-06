@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}Privacy Policy - Kinds Speak{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center p-4">
+    <div class="glass-dark max-w-4xl w-full rounded-2xl p-8 shadow-2xl">
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent mb-4">
+                Privacy Policy
+            </h1>
+            <p class="text-slate-400">Last updated: {{ current_date }}</p>
+        </div>
+
+        <div class="prose prose-invert max-w-none">
+            <div class="space-y-6 text-slate-300">
+                <section>
+                    <h2 class="text-2xl font-semibold text-purple-400 mb-4">1. Information We Collect</h2>
+                    <p>We collect information you provide directly to us, such as when you create an account, use our emotion detection features, or communicate with us.</p>
+                    <ul class="list-disc list-inside mt-2 space-y-1">
+                        <li>Account information (username, email)</li>
+                        <li>Chat messages and conversations</li>
+                        <li>Emotion detection data from camera usage</li>
+                        <li>Wellness and meditation session data</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2 class="text-2xl font-semibold text-purple-400 mb-4">2. How We Use Your Information</h2>
+                    <p>We use the information we collect to:</p>
+                    <ul class="list-disc list-inside mt-2 space-y-1">
+                        <li>Provide and improve our services</li>
+                        <li>Personalize your experience</li>
+                        <li>Analyze emotions to provide better AI responses</li>
+                        <li>Track wellness progress and provide insights</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2 class="text-2xl font-semibold text-purple-400 mb-4">3. Camera and Emotion Detection</h2>
+                    <p>Our emotion detection feature uses your camera to analyze facial expressions. This data is processed locally and securely to provide personalized AI responses. Camera access requires your explicit permission and can be disabled at any time.</p>
+                </section>
+
+                <section>
+                    <h2 class="text-2xl font-semibold text-purple-400 mb-4">4. Data Storage and Security</h2>
+                    <p>Your data is stored securely using Firebase Firestore with industry-standard encryption. We implement appropriate security measures to protect your personal information.</p>
+                </section>
+
+                <section>
+                    <h2 class="text-2xl font-semibold text-purple-400 mb-4">5. Data Sharing</h2>
+                    <p>We do not sell, trade, or otherwise transfer your personal information to third parties without your consent, except as described in this policy.</p>
+                </section>
+
+                <section>
+                    <h2 class="text-2xl font-semibold text-purple-400 mb-4">6. Your Rights</h2>
+                    <p>You have the right to access, update, or delete your personal information. You can manage your data through your account settings or by contacting us.</p>
+                </section>
+
+                <section>
+                    <h2 class="text-2xl font-semibold text-purple-400 mb-4">7. Contact Us</h2>
+                    <p>If you have any questions about this Privacy Policy, please contact us through the app's support system.</p>
+                </section>
+            </div>
+        </div>
+
+        <div class="text-center mt-8">
+            <a href="{{ url_for('register') }}" class="btn-modern btn-primary">
+                Back to Registration
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
